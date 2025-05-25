@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products | AJ Supermarket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <a href="index.html" class="logo-img">
+        <img src="aj_supermarket_logo.png" alt="AJ Supermarket logo" />
+      </a>
+      <div class="logo-text">AJ Supermarket</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="our_product.html" class="active">Our Product</a></li>
+      <li><a href="promotion.html">Promotion</a></li>
+      <li><a href="cart.html">View Cart 🛒</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Products Section -->
+  <section class="products-section">
+    <h1 class="heading">Our <span>Products</span></h1>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons">
+      <button onclick="filterProducts('all')">All Products</button>
+      <button onclick="filterProducts('food')">Food & Snack</button>
+      <button onclick="filterProducts('beauty')">Beauty</button>
+      <button onclick="filterProducts('health')">Health</button>
+    </div>
+
+    <!-- Product Cards -->
+    <div class="product-grid" id="product-grid">
+      <!-- Product cards will be dynamically generated here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 AJ Supermarket. All rights reserved.</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Sample product data
+    const products = [
+      {
+        id: 1,
+        name: "Maggi",
+        price: 5.00,
+        category: "food",
+        image: "maggi.jpg",
+        description: "A food saver for the students. Grab while it lasts.",
+      },
+      {
+        id: 2,
+        name: "Kitkat",
+        price: 6.00,
+        category: "food",
+        image: "kitkat.jpg",
+        description: "Snacks to eat in leisure time.",
+      },
+      {
+        id: 3,
+        name: "Lays",
+        price: 3.50,
+        category: "food",
+        image: "lays.jpg",
+        description: "Melt-off your worries during the day.",
+      },
+      {
+        id: 4,
+        name: "Nivea Repair & Care Body Lotion",
+        price: 26.00,
+        category: "beauty",
+        image: "Nivea_Repair_Care_Body_Lotion.jpg",
+        description: "Nourishing body lotion for soft skin.",
+      },
+      {
+        id: 5,
+        name: "Darlie Wavy Fresh Toothbrush",
+        price: 13.90,
+        category: "health",
+        image: "Darlie.png",
+        description: "Value pack toothbrush for fresh breath.",
+      },
+      // Add more products as needed
+    ];
+
+    // Function to load products
+    function loadProducts() {
+      const container = document.getElementById('product-grid');
+      container.innerHTML = ''; // Clear existing products
+
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.setAttribute('data-category', product.category);
+        card.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <span class="price">RM${product.price.toFixed(2)}</span>
+          <button class="order-btn" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        `;
+        container.appendChild(card); // Append the card to the container
+      });
+    }
+
+    // Function to add to cart
+    function addToCart(productName, price) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push({ name: productName, price: price });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(`${productName} has been added to the cart!`);
+    }
+
+    // Function to filter products
+    function filterProducts(category) {
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Show all products by default when the page loads
+    window.onload = () => {
+      loadProducts(); // Load products on page load
+      filterProducts('all'); // Show all products
+    };
+  </script>
+</body>
+</html>
